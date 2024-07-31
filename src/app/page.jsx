@@ -3,47 +3,59 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-async function fetchData() {
-    const res = await fetch('https://api.ca7mobile.com/get', {
-        next: { revalidate: 0 }
-    });
 
-    if (!res.ok) {
-        throw new Error('Failed to fetch data');
-    }
+const imgs = ['1.jpg','1.gif','2.jpg','2.gif','3.jpg','3.gif','4.jpg','5.jpg','6.jpg'];
 
-    return res.json();
-}
+
 
 export default function Page() {
     const [data, setData] = useState([]);
     const router = useRouter();
     const [targetUrl, setTargetUrl] = useState('');
+    const [weburl, setWeburl] = useState('');
 
     useEffect(() => {
-        // Fetch data from API
-        fetchData()
-            .then((data) => setData(data))
-            .catch((error) => console.error('Failed to fetch data:', error));
+        
 
-        // Set target URL from environment variables
+        
         setTargetUrl(process.env.NEXT_PUBLIC_TARGET_URL);
     }, []);
 
 
     const Clickitem = (e) => {
         if (targetUrl) {
-            window.open(targetUrl, '_blank'); // เปิด URL ในหน้าใหม่
+            window.open(weburl, '_blank');
         } else {
             console.error('Target URL is not set');
         }
     }
 
 
+   
+
+   useEffect(() => {
+
+    const weburls = process.env.NEXT_PUBLIC_API_URLA;
+
+    setWeburl(weburls);
+   })
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <>
 
-      
+            
         <div className="container-fluid fixed-top px-0 wow fadeIn" data-wow-delay="0.1s">
         <div className="top-bar row gx-0 align-items-center d-none d-lg-flex">
             <div className="col-lg-6 px-5 text-start">
@@ -92,10 +104,10 @@ export default function Page() {
 
 <header id='header' >
 
-                                     <button onClick={Clickitem} targrt="bank" className='Clickitem' >  
-                                     <div className="item"  >{data.map((item, index) => (
-                                    <div key={index}>
-                                    <img src={`${targetUrl}/${item.img}`} alt={`Image ${index}`} />
+                                  <button onClick={Clickitem} targrt="bank" className='Clickitem' >  
+                                     <div className="item"  >{imgs.map((item) => (
+                                    <div key={item}>
+                                        <img src={`${weburl}/img/img/${item}`} alt="" />
                                     </div>
                                     ))} </div>
                                                         
